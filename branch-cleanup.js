@@ -8,6 +8,11 @@ async function main() {
   const owner = data.pull_request.head.repo.owner.login
   const repo = data.pull_request.head.repo.name
 
+  if (!data.pull_request.merged) {
+    console.log(`Skipping: branch "${ref}" has not been merged`)
+    return
+  }
+
   const repoInfo = await client.repos.get({ owner, repo })
   const defaultBranch = repoInfo.data.default_branch
   if (defaultBranch === ref) {

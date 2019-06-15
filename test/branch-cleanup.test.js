@@ -9,12 +9,14 @@ describe('branch-cleanup.js', () => {
     ref = 'new-feature'
     owner = 'appleton'
     repo = 'dotfiles'
+    merged = true
     defaultBranch = 'master'
     isProtected = false
     otherPRs = []
 
     eventData = JSON.stringify({
       pull_request: {
+        merged,
         head: { ref, repo: { name: repo, owner: { login: owner } } }
       }
     })
@@ -35,6 +37,22 @@ describe('branch-cleanup.js', () => {
   it('deletes the branch', async () => {
     await run('branch-cleanup.js', { EVENT_JSON: eventData })
     expect(deleteBranch.isDone()).to.eq(true)
+  })
+
+  describe('when the branch was not merged', () => {
+    beforeEach(() => {
+      eventData = JSON.stringify({
+        pull_request: {
+          merged: false,
+          head: { ref, repo: { name: repo, owner: { login: owner } } }
+        }
+      })
+    })
+
+    it('does not delete the branch', async () => {
+      await run('branch-cleanup.js', { EVENT_JSON: eventData })
+      expect(deleteBranch.isDone()).to.eq(false)
+    })
   })
 
   describe('when the branch is the default', () => {

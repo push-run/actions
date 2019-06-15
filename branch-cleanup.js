@@ -41,17 +41,25 @@ async function main() {
   }
 
   console.log(`Deleting branch "${ref}" for ${owner}/${repo}...`)
-  const deleteResponse = await client.git.deleteRef({ owner, repo, ref })
-
-  if (deleteResponse.status === 422) {
-    console.log(`The branch ${ref} was already deleted`)
-  } else if (deleteResponse.status === 204) {
+  try {
+    const deleteResponse = await client.git.deleteRef({
+      owner,
+      repo,
+      ref: `heads/${ref}`
+    })
     console.log(`Branch ${ref} deleted`)
-  } else {
+    if (deleteResponse.status === 422) {
+      console.log(`The branch ${ref} was already deleted`)
+    } else if (deleteResponse.status === 204) {
+    } else {
+      console.log('Something unexpected happened!')
+      console.log(
+        `status: ${deleteResponse.status}, response body: ${deleteResponse.data}`
+      )
+    }
+  } catch (error) {
     console.log('Something unexpected happened!')
-    console.log(
-      `status: ${deleteResponse.status}, response body: ${deleteResponse.data}`
-    )
+    console.log(error.message)
   }
 }
 

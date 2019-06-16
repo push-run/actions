@@ -6,6 +6,8 @@ A repository of shared actions to include in your workflows
 
 Automatically delete a pull request branch on merge.
 
+<img width="783" alt="Screenshot 2019-06-16 at 5 32 41 pm" src="https://user-images.githubusercontent.com/241576/59566789-d10a1280-905c-11e9-860d-1d4148cdcf07.png">
+
 **usage:**
 
 ```hcl

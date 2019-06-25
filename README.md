@@ -19,6 +19,6 @@ workflow "PR branch cleanup" {
 }
 
 action "branch cleanup" {
-  uses = "appleton/push-run-actions/branch-cleanup.js@1.0.0"
+  uses = "push-run/actions/branch-cleanup.js@1.0.0"
 }
 ```
